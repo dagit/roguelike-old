@@ -14,9 +14,20 @@ SRCS := $(wildcard $(SRCDIR)/*.cpp)
 OBJDIR = obj
 OBJS := $(patsubst $(SRCDIR)%, $(OBJDIR)%, $(patsubst %.cpp, %.o, $(SRCS)))
 
+DEPDIR = dep
+DEPS := $(patsubst $(SRCDIR)%, $(DEPDIR)%, $(patsubst %.cpp, %.d, $(SRCS)))
+SUFFIXES += .d
+
 MAIN = rogue
 
-.PHONY: .depend clean
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(DEPDIR)/%.d
+	@echo [$(CXX)] $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+$(DEPDIR)/%.d: $(SRCDIR)/%.cpp
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) -MM -MT '$(patsubst $(SRCDIR)%,$(OBJDIR)%,$(patsubst %.cpp,%.o,$<))' $< > $@
+
+.PHONY: clean
 
 all:    $(MAIN)
 
@@ -24,16 +35,8 @@ $(MAIN): $(OBJS)
 	@echo [$(CXX)] rogue
 	@$(CXX) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	@echo [$(CXX)] $@
-	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
-
 clean:
-	$(RM) $(OBJS) $(MAIN)
+	$(RM) $(OBJS) $(MAIN) $(DEPS)
 
-.depend: $(SRCS)
-	@echo Finding dependencies
-	@$(RM) .depend
-	@makedepend $(INCLUDES) -f- -- $(CXXFLAGS) -- $^ > .depend
 
-include .depend
+-include $(DEPS)
