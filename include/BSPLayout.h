@@ -192,6 +192,8 @@ const Point BSPLayout<MapT>::span(size_t low, size_t high, size_t min) const
   return std::make_pair( std::min(p1,p2), std::max(p1,p2) );
 }
 
+/*
+TODO: What was I writing here?
 template<typename MapT>
 const Point BSPLayout<MapT>::ScanForPoint(size_t start, size_t end)
 {
@@ -202,7 +204,7 @@ const Point BSPLayout<MapT>::ScanForPoint(size_t start, size_t end)
   // So we try to pick a distinct point each time and stop when there are
   // no more points in the range
   std::vector< size_t > points;
-  points.reserve( abs(static_cast<int>(end - start) );
+  points.reserve( abs(static_cast<int>(end - start) ));
   do {
     y1 = m_rand.Next( std::min(start, end), std::max(start, end) );
     
@@ -217,6 +219,7 @@ const Point BSPLayout<MapT>::ScanForPoint(size_t start, size_t end)
   } while (!foundIt);
   return p1;
 }
+*/
 
 template<typename MapT>
 void BSPLayout<MapT>::connect(MapT & map, bool connectHorizontally, 
