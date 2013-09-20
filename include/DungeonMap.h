@@ -1,6 +1,7 @@
 #ifndef DUNGEONMAP_H
 #define DUNGEONMAP_H
 
+#include <cassert>
 #include <vector>
 #include <iostream>
 

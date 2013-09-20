@@ -183,7 +183,7 @@ const Point BSPLayout<MapT>::span(size_t low, size_t high, size_t min) const
     do {
       p1 = m_rand.Next( low, high );
       p2 = m_rand.Next( low, high );
-    } while ( std::abs(static_cast<int>(p1 - p2)) < min );
+    } while ( static_cast<size_t>(std::abs(static_cast<long int>(p1 - p2))) < min );
   } else {
     p1 = low;
     p2 = high;
